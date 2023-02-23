@@ -1,0 +1,10 @@
+<app-card *ngIf="planet">
+  <a [routerLink]="[planet.name]">
+    <div class="card__name text-3xl text-center mb-3 mt-3">{{planet.name}}</div>
+    <div class="card__content w-[80%] m-auto text-base">
+      <div>Diameter: <span class="font-bold">{{planet.diameter}}</span> km</div>
+      <div>Terrain: <span class="font-bold">{{planet.terrain}}</span></div>
+      <div>Population: <span class="font-bold">{{planet.population}}</span></div>
+    </div>
+  </a>
+</app-card>

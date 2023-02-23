@@ -1,0 +1,37 @@
+<div *ngIf="planetInfo" class="flex">
+  <div class="bg-amber-200 w-[350px] p-4 h-[350px]">
+    <h2 class="text-4xl mb-3">{{name}}</h2>
+    <div class="text-2xl">Population: {{population}}</div>
+    <div class="text-2xl">Diameter: {{diameter}}km</div>
+    <div class="text-2xl">Terrain: {{terrain}}</div>
+    <div class="text-2xl">Surface water: {{water}}%</div>
+    <div class="text-2xl">Orbital period: {{orbital}} days</div>
+    <div class="text-2xl">Rotation period: {{rotation}} hours</div>
+  </div>
+
+  <div class="w-[700px]">
+
+    <div class="flex"><h3 class="text-3xl text-center mb-5 mx-auto">Residents of {{name}}:</h3>
+      <div>Show
+        <select #gender (change)="applyFilter(gender.value)">
+          <option selected value="">all</option>
+          <option value="male">male</option>
+          <option value="female">female</option>
+        </select>
+      </div>
+    </div>
+    <div *ngIf="loadingResidents" class="text-center text-3xl">
+      Loading residents...
+    </div>
+    <div *ngIf="residents" class="flex flex-wrap gap-4 ml-10 flex-grow-0">
+      <app-resident-card class="w-[200px]" *ngFor="let resident of filteredResidents" [resident]="resident"></app-resident-card>
+    </div>
+    <div *ngIf="isNoResidents && !loading" class="text-center text-3xl">
+      Found no residents
+    </div>
+  </div>
+
+
+</div>
+
+<loading-message *ngIf="loading"></loading-message>

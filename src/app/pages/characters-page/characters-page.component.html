@@ -1,0 +1,20 @@
+<div>
+  <h2 class="text-3xl text-center my-4">Characters</h2>
+
+  <div *ngIf="!loading" class="flex flex-wrap justify-center gap-4">
+    <app-resident-card class="w-1/5" *ngFor="let person of people; trackBy: peopleTrackBy" [resident]="person"></app-resident-card>
+  </div>
+  <loading-message *ngIf="loading"></loading-message>
+  <div class="pagination my-4 flex flex-col justify-center items-center">
+    <div class="pagination__title">Page {{currentPage}}</div>
+    <div class="pagination__buttons">
+      <button (click)="changePage(-1)" class="pagination__button p-2 mx-1 border-blue-300 border-2 hover:bg-blue-300 duration-300">
+        Prev page
+      </button>
+      <button (click)="changePage(1)" class="pagination__button p-2 mx-1 border-blue-300 border-2 hover:bg-blue-300 duration-300">
+        Next page
+      </button>
+    </div>
+  </div>
+
+</div>
