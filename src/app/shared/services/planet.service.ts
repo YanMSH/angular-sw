@@ -26,7 +26,6 @@ export class PlanetService {
       if (v.residents.length > 0) {
         forkJoin(v.residents.map(url => this.httpClient.get<People>(url))).subscribe(v => {
           this.currentResidents$.next(v);
-          console.log('Residents of this planet:', v);
         })
       } else {
         this.currentResidents$.next([]);

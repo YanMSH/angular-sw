@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {People} from "../../models/People";
-import {BehaviorSubject, catchError, EMPTY, Subject, tap} from "rxjs";
+import {BehaviorSubject, catchError, EMPTY, tap} from "rxjs";
 import {baseURL} from "../../server/baseURL";
 import {Endpoints} from "../../server/Endpoints";
 import {HttpClient, HttpParams} from "@angular/common/http";
@@ -15,7 +15,6 @@ export class PeopleService {
   isFirstPage: boolean;
   isLastPage: boolean;
   page$ = new BehaviorSubject(1);
-  currentPeople$ = new Subject<People>();
 
   constructor(private httpClient: HttpClient) {
   }

@@ -7,5 +7,6 @@ import {Component, Input} from '@angular/core';
 })
 export class NavigationLinkComponent {
   @Input() link: string;
+  @Input() linkText: string;
 
 }
