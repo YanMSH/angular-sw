@@ -26,9 +26,9 @@ export class CharactersPageComponent implements OnInit, OnDestroy {
             takeUntil(this.destroy$)
           )
           .subscribe(
-          () => {
+          (v) => {
             this.loading = false;
-            this.people = this.peopleService.people;
+            this.people = v.results;
           }
         )
       }

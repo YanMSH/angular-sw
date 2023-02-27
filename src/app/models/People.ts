@@ -16,3 +16,28 @@ export interface People {
   created: string // The ISO 8601 date format of the time that this resource was created.
   edited: string // The ISO 8601 date format of the time that this resource was edited.
 }
+
+
+// response from 'https://swapi.dev/api/people/77'
+export const MOCK_PEOPLE: People = {
+  name: "San Hill",
+  height: "191",
+  mass: "unknown",
+  hair_color: "none",
+  skin_color: "grey",
+  eye_color: "gold",
+  birth_year: "unknown",
+  gender: "male",
+  homeworld: "https://swapi.dev/api/planets/57/",
+  films: [
+    "https://swapi.dev/api/films/5/"
+  ],
+  species: [
+    "https://swapi.dev/api/species/34/"
+  ],
+  vehicles: [],
+  starships: [],
+  created: "2014-12-20T17:58:17.049000Z",
+  edited: "2014-12-20T21:17:50.484000Z",
+  url: "https://swapi.dev/api/people/77/"
+}

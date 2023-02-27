@@ -11,8 +11,6 @@ import {ServerResponse} from "../../models/ServerResponse";
   providedIn: 'root'
 })
 export class PlanetService {
-  planets: Planet[] = [];
-  planetInfo: Planet;
   isFirstPage = false;
   isLastPage = false;
   page$ = new BehaviorSubject(1);
@@ -33,17 +31,16 @@ export class PlanetService {
     })
   }
 
-  getPlanets(page = 1): Observable<ServerResponse> {
+  getPlanets(page = 1): Observable<ServerResponse<Planet>> {
     this.isFirstPage = false;
     this.isLastPage = false;
-    return this.httpClient.get<ServerResponse>(baseURL + Endpoints.planets, {
+    return this.httpClient.get<ServerResponse<Planet>>(baseURL + Endpoints.planets, {
       params: new HttpParams({fromObject: {page}})
     })
       .pipe(
         catchError(() => EMPTY),
         tap(response => {
           const pagesAmount = response.count / response.results.length;
-          this.planets = response.results as Planet[];
           if (page === 1) {
             this.isFirstPage = true
           }
@@ -55,7 +52,7 @@ export class PlanetService {
   }
 
   getPlanetInfo(planetName: string) {
-    return this.httpClient.get<ServerResponse>(baseURL + Endpoints.planets,
+    return this.httpClient.get<ServerResponse<Planet>>(baseURL + Endpoints.planets,
       {
         params: new HttpParams({
           fromObject: {
@@ -64,10 +61,7 @@ export class PlanetService {
         })
       })
       .pipe(
-        catchError(() => EMPTY),
-        tap((response) => {
-          this.planetInfo = response.results[0] as Planet;
-        })
+        catchError(() => EMPTY)
       )
   }
 

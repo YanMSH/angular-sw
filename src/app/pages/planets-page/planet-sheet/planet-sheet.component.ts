@@ -36,8 +36,8 @@ export class PlanetSheetComponent implements OnInit, OnDestroy {
         this.planetService.getPlanetInfo(planetName)
           .pipe(takeUntil(this.destroy$))
           .subscribe(
-          () => {
-            this.planetInfo = this.planetService.planetInfo;
+          (v) => {
+            this.planetInfo = v.results[0];
             this.loading = false;
             this.planetService.currentPlanet$.next(this.planetInfo);
           }

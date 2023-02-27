@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Planet} from "../../models/Planet";
 import {PlanetService} from "../../shared/services/planet.service";
-import {People} from "../../models/People";
 import {Subject, takeUntil} from "rxjs";
 
 @Component({
@@ -12,7 +11,7 @@ import {Subject, takeUntil} from "rxjs";
 export class PlanetsPageComponent implements OnInit, OnDestroy {
   loading = false;
   chosenPlanet: Planet;
-  people: People[] = [];
+  // people: People[] = [];
   planets: Planet[];
   destroy$ = new Subject<boolean>()
 
@@ -28,9 +27,9 @@ export class PlanetsPageComponent implements OnInit, OnDestroy {
         this.planetService.getPlanets(currentPage)
           .pipe(takeUntil(this.destroy$))
           .subscribe(
-            () => {
+            (v) => {
               this.loading = false;
-              this.planets = this.planetService.planets
+              this.planets = v.results;
             }
           )
       }

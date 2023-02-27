@@ -25,12 +25,12 @@ export class CharacterSheetComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(v => {
       const characterName = v.get('characterName');
-      if (characterName) {
+        if (characterName) {
         this.peopleService.getPeopleInfo(characterName)
           .pipe(takeUntil(this.destroy$))
           .subscribe(
-          () => {
-            this.characterInfo = this.peopleService.peopleInfo;
+          (v) => {
+            this.characterInfo = v.results[0] as People;
             this.loading = false;
           }
         );

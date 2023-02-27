@@ -10,8 +10,7 @@ import {ServerResponse} from "../../models/ServerResponse";
   providedIn: 'root'
 })
 export class PeopleService {
-  people: People[];
-  peopleInfo: People;
+
   isFirstPage: boolean;
   isLastPage: boolean;
   page$ = new BehaviorSubject(1);
@@ -22,14 +21,13 @@ export class PeopleService {
   getPeople(page = 1) {
     this.isFirstPage = false;
     this.isLastPage = false;
-    return this.httpClient.get<ServerResponse>(baseURL + Endpoints.people, {
+    return this.httpClient.get<ServerResponse<People>>(baseURL + Endpoints.people, {
       params: new HttpParams({fromObject: {page}})
     })
       .pipe(
         catchError(() => EMPTY),
         tap(response => {
           const pagesAmount = response.count / response.results.length;
-          this.people = response.results as People[];
           if (page === 1) {
             this.isFirstPage = true
           }
@@ -41,7 +39,7 @@ export class PeopleService {
   }
 
   getPeopleInfo(peopleName: string) {
-    return this.httpClient.get<ServerResponse>(baseURL + Endpoints.people,
+    return this.httpClient.get<ServerResponse<People>>(baseURL + Endpoints.people,
       {
         params: new HttpParams({
           fromObject: {
@@ -50,10 +48,7 @@ export class PeopleService {
         })
       })
       .pipe(
-        catchError(() => EMPTY),
-        tap((response) => {
-          this.peopleInfo = response.results[0] as People;
-        })
+        catchError(() => EMPTY)
       )
   }
 }
