@@ -1,4 +1,4 @@
-import {MOCK_PEOPLE, People} from "./People";
+import {MOCK_PEOPLE, MOCK_PEOPLE_INFO, People} from "./People";
 
 
 
@@ -9,11 +9,19 @@ export interface ServerResponse<T> {
   results: T[];
 }
 
-export const MOCK_RESPONSE: ServerResponse<People> = {
-  "count": 1,
-  "next": null,
-  "previous": null,
-  "results": [
-    MOCK_PEOPLE
+export const MOCK_PEOPLE_INFO_RESPONSE: ServerResponse<People> = {
+  count: 1,
+  next: null,
+  previous: null,
+  results: [
+    MOCK_PEOPLE_INFO
   ]
 }
+
+export const MOCK_PEOPLE_RESPONSE: ServerResponse<People> = {
+  count: 82,
+  next: "https://swapi.dev/api/people/?page=2",
+  previous: null,
+  results: MOCK_PEOPLE
+}
+
