@@ -13,9 +13,8 @@ export class PlanetsPageComponent implements OnInit, OnDestroy {
   isFirstPage: boolean;
   isLastPage: boolean;
   currentPage$ = new BehaviorSubject(1);
-  chosenPlanet: Planet;
-  planets: Planet[];
   destroy$ = new Subject<boolean>()
+  planets: Planet[];
 
   constructor(
     private planetService: PlanetService
@@ -60,6 +59,4 @@ export class PlanetsPageComponent implements OnInit, OnDestroy {
   planetsTrackBy(index: number, planet: Planet) {
     return planet.name;
   }
-
-
 }
