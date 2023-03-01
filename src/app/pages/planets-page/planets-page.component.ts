@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Planet} from "../../models/Planet";
 import {PlanetService} from "../../shared/services/planet.service";
-import {Subject, takeUntil} from "rxjs";
+import {BehaviorSubject, Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-planets-page',
@@ -10,8 +10,10 @@ import {Subject, takeUntil} from "rxjs";
 })
 export class PlanetsPageComponent implements OnInit, OnDestroy {
   loading = false;
+  isFirstPage: boolean;
+  isLastPage: boolean;
+  currentPage$ = new BehaviorSubject(1);
   chosenPlanet: Planet;
-  // people: People[] = [];
   planets: Planet[];
   destroy$ = new Subject<boolean>()
 
@@ -22,12 +24,14 @@ export class PlanetsPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
-    this.planetService.page$.subscribe(
+    this.currentPage$.subscribe(
       (currentPage) => {
         this.planetService.getPlanets(currentPage)
           .pipe(takeUntil(this.destroy$))
           .subscribe(
             (v) => {
+              this.isFirstPage = v.previous === null;
+              this.isLastPage = v.next === null;
               this.loading = false;
               this.planets = v.results;
             }
@@ -42,13 +46,16 @@ export class PlanetsPageComponent implements OnInit, OnDestroy {
   }
 
   get currentPage() {
-    return this.planetService.page$.value;
+    return this.currentPage$.value;
   }
 
   changePage(amount: number) {
-    this.planetService.page$.next(this.planetService.page$.value + amount);
+    this.currentPage$.next(this.currentPage$.value + amount);
     this.loading = true;
   }
+
+  nextPage = () => this.changePage(1);
+  prevPage = () => this.changePage(-1);
 
   planetsTrackBy(index: number, planet: Planet) {
     return planet.name;

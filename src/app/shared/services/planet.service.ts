@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Planet} from "../../models/Planet";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {BehaviorSubject, catchError, EMPTY, forkJoin, Observable, Subject, tap} from "rxjs";
+import {catchError, EMPTY, forkJoin, Observable, Subject} from "rxjs";
 import {baseURL} from "../../server/baseURL";
 import {Endpoints} from "../../server/Endpoints";
 import {People} from "../../models/People";
@@ -11,9 +11,6 @@ import {ServerResponse} from "../../models/ServerResponse";
   providedIn: 'root'
 })
 export class PlanetService {
-  isFirstPage = false;
-  isLastPage = false;
-  page$ = new BehaviorSubject(1);
   currentPlanet$ = new Subject<Planet>();
   currentResidents$ = new Subject<People[]>();
 
@@ -32,22 +29,11 @@ export class PlanetService {
   }
 
   getPlanets(page = 1): Observable<ServerResponse<Planet>> {
-    this.isFirstPage = false;
-    this.isLastPage = false;
     return this.httpClient.get<ServerResponse<Planet>>(baseURL + Endpoints.planets, {
       params: new HttpParams({fromObject: {page}})
     })
       .pipe(
         catchError(() => EMPTY),
-        tap(response => {
-          const pagesAmount = response.count / response.results.length;
-          if (page === 1) {
-            this.isFirstPage = true
-          }
-          if (page === pagesAmount) {
-            this.isLastPage = true
-          }
-        })
       )
   }
 

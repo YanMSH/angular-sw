@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PeopleService} from "../../shared/services/people.service";
 import {People} from "../../models/People";
-import {Subject, takeUntil} from "rxjs";
+import {BehaviorSubject, Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-characters-page',
@@ -11,7 +11,11 @@ import {Subject, takeUntil} from "rxjs";
 export class CharactersPageComponent implements OnInit, OnDestroy {
   loading: boolean;
   people: People[];
+  isFirstPage: boolean;
+  isLastPage: boolean;
+  currentPage$ = new BehaviorSubject(1);
   destroy$ = new Subject<boolean>();
+
   constructor(
     private peopleService: PeopleService,
   ) {
@@ -19,18 +23,20 @@ export class CharactersPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
-    this.peopleService.page$.subscribe(
-      (currentPage)=>{
+    this.currentPage$.subscribe(
+      (currentPage) => {
         this.peopleService.getPeople(currentPage)
           .pipe(
             takeUntil(this.destroy$)
           )
           .subscribe(
-          (v) => {
-            this.loading = false;
-            this.people = v.results;
-          }
-        )
+            (v) => {
+              this.isFirstPage = v.previous === null;
+              this.isLastPage = v.next === null;
+              this.loading = false;
+              this.people = v.results;
+            }
+          )
       }
     )
   }
@@ -41,13 +47,16 @@ export class CharactersPageComponent implements OnInit, OnDestroy {
   }
 
   get currentPage() {
-    return this.peopleService.page$.value;
+    return this.currentPage$.value;
   }
 
   changePage(amount: number) {
-    this.peopleService.page$.next(this.peopleService.page$.value + amount);
+    this.currentPage$.next(this.currentPage$.value + amount);
     this.loading = true;
   }
+
+  nextPage = () => this.changePage(1);
+  prevPage = () => this.changePage(-1);
 
   peopleTrackBy(index: number, people: People) {
     return people.name;
